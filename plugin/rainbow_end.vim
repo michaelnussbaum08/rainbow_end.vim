@@ -12,33 +12,42 @@ if exists("g:rainbow_end_loaded") || !has("ruby")
     finish
 endif
 
+
 function! ToggleRainbow()
 ruby << EOF
   toggle_rainbow()
 EOF
 endfunction
 
+function! RainbowOff()
+ruby << EOF
+  toggle_rainbow(turn_off = true)
+EOF
+endfunction
+
+autocmd InsertEnter * :call RainbowOff()
+
 
 ruby << EOF
 
 # TODO: find and highlight middle elements of blocks (else, rescue, etc.)
-# TODO: detect files changes, if none then reuse found blocks
+# TODO: detect text changes, if none then reuse found blocks
 
 @rainbow_on = false
 
 
-def toggle_rainbow
+def toggle_rainbow(turn_off = @rainbow_on)
   #
   # Toggles rainbow highlighting of Ruby block opening/closing keywords
   #
-  if @rainbow_on
+  if turn_off
     Vim.command("call clearmatches()")
   else
     block_finder = BlockFinder.new
     highlighter = BlockHighlighter.new(block_finder.blocks)
     highlighter.color
   end
-  @rainbow_on = !@rainbow_on
+  @rainbow_on = !turn_off
 end
 
 
@@ -82,6 +91,9 @@ class BlockHighlighter
     # word_location is a hash with a :line number and the :char_range start and
     # end indices of a word to highlight.
     #
+    if word_location.empty?
+      return
+    end
     line = word_location[:line]
     start_column = word_location[:char_range][0] + 1
     end_column = word_location[:char_range][1] + 1
@@ -165,12 +177,12 @@ class BlockFinder
     # Sort beginnings by line number so the hi lowest beginning line that is
     # still above the end line we are trying to pair off is selected first.
     beginnings.sort_by!{ |match| match[:line] }.reverse!
-    ends.map do |ending|
+    ends.each do |ending|
       # beginning_match is the first block opening keyword above the ending
       # keyword we are currently trying to pair off.
       beginning_match = beginnings.select do |beginning|
         break beginning if beginning[:line] < ending[:line]
-      end
+      end || {}
       # beginnings are removed as they're paired off with endings
       beginnings.delete(beginning_match)
       @blocks << [beginning_match, ending]
