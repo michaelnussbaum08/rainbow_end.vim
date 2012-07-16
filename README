@@ -11,9 +11,10 @@ Requirements
 Installation and Usage
 ----------------------
 
-* Drop rainbow_end.vim into .vim/plugin.
-* Choose a mapping to toggle highlighting on and off and add it to your .vimrc,
-  here is an example:
+* Use Pathogen or Vundle!
+* Or the old fashioned way, drop rainbow_end.vim into .vim/plugin.
+* Either way you have to choose a mapping to toggle highlighting on and off and
+  add it to your .vimrc, here is an example:
 
     nnoremap <silent> <leader>b :call ToggleRainbow()<CR>
 
