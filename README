@@ -1,0 +1,29 @@
+This plugin highlights Ruby opening and closing keywords with a rainbow of
+colors.
+
+Requirements
+------------
+
+* Vim 7.3+
+* Ruby support for Vim
+* Ruby 1.8+
+
+Installation and Usage
+----------------------
+
+* Drop rainbow_end.vim into .vim/plugin.
+* Choose a mapping to toggle highlighting on and off and add it to your .vimrc,
+  here is an example:
+
+    nnoremap <silent> <leader>b :call ToggleRainbow()<CR>
+
+License
+-------
+
+GPLv2+
+
+Version
+-------
+
+0.1.0
+
