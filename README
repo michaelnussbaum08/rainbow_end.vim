@@ -1,5 +1,6 @@
 This plugin highlights Ruby opening and closing keywords with a rainbow of
-colors.
+colors. Currently the plugin must be toggled off when editing text in command
+mode or else the highlighting fails.
 
 Please submit pull requests to
 https://github.com/michaelnussbaum08/rainbow_end.vim
