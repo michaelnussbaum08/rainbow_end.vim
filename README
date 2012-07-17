@@ -10,7 +10,7 @@ Requirements
 
 * Vim 7.3+
 * Ruby support for Vim
-* Ruby 1.8+
+* Ruby 1.8.6+
 
 Installation and Usage
 ----------------------
@@ -30,5 +30,5 @@ GPLv2+
 Version
 -------
 
-0.1.0
+0.1.1
 

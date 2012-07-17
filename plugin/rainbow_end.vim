@@ -3,7 +3,7 @@
 " Description: vim plugin to rainbow highligh ruby block keywords
 " Maintainer:  Michael Nussbaum <michaelnussbaum08@gmail.com>
 " License:     GPLv2+
-" Version:     0.1.0
+" Version:     0.1.1
 "
 " ============================================================================
 
