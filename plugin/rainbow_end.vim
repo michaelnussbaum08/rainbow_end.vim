@@ -71,9 +71,18 @@ class BlockHighlighter
   end
 
   def color()
-    colors = COLORS.cycle
+    # cycle through all available colors
+    colors = COLORS.keys
+    color_counter = 0
     @blocks.each do |beginning, ending|
-      color, color_code = colors.next
+      color = colors[color_counter]
+      color_code = COLORS[color]
+      # loop counter back to zero if end reachead
+      if color_counter + 1 == colors.size
+        color_counter = 0
+      else
+        color_counter += 1
+      end
       # the vim color group must be declared before it can be used
       _make_color_group(color, color_code)
       _highlight_word(color, beginning)
@@ -152,7 +161,7 @@ class BlockFinder
         match_group = end_lines
       elsif beginning_matches.any?
         # There should only be one beginning per line
-        found_beginning = beginning_matches.keep_if { |found| found }.first
+        found_beginning = beginning_matches.compact.first
         match_range = found_beginning.offset(0)
         match_group = beginning_lines
       end
@@ -160,7 +169,7 @@ class BlockFinder
       if match_range
         hash_match = line.match("#")
         if not hash_match or (hash_match and
-          hash_match.offset(0)[0] > match_range[0])
+            hash_match.offset(0)[0] > match_range[0])
           match_group << {:line => line_num, :char_range => match_range}
         end
       end
@@ -176,7 +185,7 @@ class BlockFinder
     #
     # Sort beginnings by line number so the hi lowest beginning line that is
     # still above the end line we are trying to pair off is selected first.
-    beginnings.sort_by!{ |match| match[:line] }.reverse!
+    beginnings.sort!{ |match1, match2| match1[:line] <=> match2[:line] }.reverse!
     ends.each do |ending|
       # beginning_match is the first block opening keyword above the ending
       # keyword we are currently trying to pair off.
